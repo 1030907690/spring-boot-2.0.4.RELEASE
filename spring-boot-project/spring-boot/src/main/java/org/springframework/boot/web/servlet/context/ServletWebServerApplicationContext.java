@@ -235,6 +235,7 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 		WebApplicationContextUtils.registerEnvironmentBeans(beanFactory,
 				getServletContext());
 		for (ServletContextInitializer beans : getServletContextInitializerBeans()) {
+			//遍历全部ServletContextInitializer RegistrationBean注册servlet
 			beans.onStartup(servletContext);
 		}
 	}

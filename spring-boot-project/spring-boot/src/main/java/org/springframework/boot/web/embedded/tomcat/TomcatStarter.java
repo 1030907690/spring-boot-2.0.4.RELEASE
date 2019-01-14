@@ -46,10 +46,21 @@ class TomcatStarter implements ServletContainerInitializer {
 		this.initializers = initializers;
 	}
 
+	/*
+	Embedded servlet containers do not directly execute the Servlet 3.0+ javax.servlet.ServletContainerInitializer interface or Spring’s org.springframework.web.WebApplicationInitializer interface. This is an intentional design decision intended to reduce the risk that third party libraries designed to run inside a war may break Spring Boot applications.
+
+	If you need to perform servlet context initialization in a Spring Boot application, you should register a bean that implements the org.springframework.boot.web.servlet.ServletContextInitializer interface. The single onStartup method provides access to the ServletContext and, if necessary, can easily be used as an adapter to an existing WebApplicationInitializer.
+
+	Scanning for Servlets, Filters, and listeners
+
+	When using an embedded container, automatic registration of classes annotated with @WebServlet, @WebFilter, and @WebListener can be enabled by using @ServletComponentScan.
+	* */
+	//StandardContext#startInternal()调用这里
 	@Override
 	public void onStartup(Set<Class<?>> classes, ServletContext servletContext)
 			throws ServletException {
 		try {
+			//  遍历ServletContextInitializer  ServletWebServerApplicationContext注册servlet的操作
 			for (ServletContextInitializer initializer : this.initializers) {
 				initializer.onStartup(servletContext);
 			}
