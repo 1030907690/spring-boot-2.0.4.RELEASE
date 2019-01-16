@@ -213,8 +213,10 @@ public class TomcatServletWebServerFactory extends AbstractServletWebServerFacto
 			addJasperInitializer(context);
 		}
 		context.addLifecycleListener(new StaticResourceConfigurer(context));
+		//合并initializers
 		ServletContextInitializer[] initializersToUse = mergeInitializers(initializers);
 		host.addChild(context);
+		//配置tomcat上下文
 		configureContext(context, initializersToUse);
 		postProcessContext(context);
 	}
@@ -332,6 +334,7 @@ public class TomcatServletWebServerFactory extends AbstractServletWebServerFacto
 			// Should be true
 			((TomcatEmbeddedContext) context).setStarter(starter);
 		}
+		//设置tomcat的初始化 ServletContainerInitializer
 		context.addServletContainerInitializer(starter, NO_CLASSES);
 		for (LifecycleListener lifecycleListener : this.contextLifecycleListeners) {
 			context.addLifecycleListener(lifecycleListener);

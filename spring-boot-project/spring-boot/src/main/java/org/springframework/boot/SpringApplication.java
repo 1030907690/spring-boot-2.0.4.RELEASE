@@ -325,6 +325,7 @@ public class SpringApplication {
 			exceptionReporters = getSpringFactoriesInstances(
 					SpringBootExceptionReporter.class,
 					new Class[] { ConfigurableApplicationContext.class }, context);
+			//准备上下文环境   The following profiles are active: dev  选择环境
 			prepareContext(context, environment, listeners, applicationArguments,
 					printedBanner);
 			refreshContext(context);
@@ -759,6 +760,7 @@ public class SpringApplication {
 	 */
 	protected void refresh(ApplicationContext applicationContext) {
 		Assert.isInstanceOf(AbstractApplicationContext.class, applicationContext);
+		//applicationContext是ServletWebServerApplicationContext
 		((AbstractApplicationContext) applicationContext).refresh();
 	}
 

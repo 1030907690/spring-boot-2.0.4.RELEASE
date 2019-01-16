@@ -149,6 +149,7 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 	protected void onRefresh() {
 		super.onRefresh();
 		try {
+			//创建web服务
 			createWebServer();
 		}
 		catch (Throwable ex) {
@@ -175,7 +176,9 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 		WebServer webServer = this.webServer;
 		ServletContext servletContext = getServletContext();
 		if (webServer == null && servletContext == null) {
+			//得到web服务工厂
 			ServletWebServerFactory factory = getWebServerFactory();
+
 			this.webServer = factory.getWebServer(getSelfInitializer());
 		}
 		else if (servletContext != null) {
