@@ -104,6 +104,7 @@ public class ConfigFileApplicationListener
 	private static final String DEFAULT_PROPERTIES = "defaultProperties";
 
 	// Note the order is from least to most specific (last one wins)
+	//在执行完上述三个监听器流程后 ,ConfigFileApplicationListener会执行该类本身的逻辑。由其内部类Loader加载项目制定路径下的配置文件：
 	private static final String DEFAULT_SEARCH_LOCATIONS = "classpath:/,classpath:/config/,file:./,file:./config/";
 
 	private static final String DEFAULT_NAMES = "application";
@@ -178,6 +179,7 @@ public class ConfigFileApplicationListener
 
 	private void onApplicationEnvironmentPreparedEvent(
 			ApplicationEnvironmentPreparedEvent event) {
+		//首先还是会去读spring.factories 文件，List<EnvironmentPostProcessor> postProcessors = loadPostProcessors();获取的处理类有以下四种
 		List<EnvironmentPostProcessor> postProcessors = loadPostProcessors();
 		postProcessors.add(this);
 		AnnotationAwareOrderComparator.sort(postProcessors);

@@ -131,15 +131,19 @@ class BeanDefinitionLoader {
 
 	private int load(Object source) {
 		Assert.notNull(source, "Source must not be null");
+		//如果是class类型，启用注解类型
 		if (source instanceof Class<?>) {
 			return load((Class<?>) source);
 		}
+		//如果是resource类型，启用xml解析
 		if (source instanceof Resource) {
 			return load((Resource) source);
 		}
+		//如果是package类型，启用扫描包，例如：@ComponentScan
 		if (source instanceof Package) {
 			return load((Package) source);
 		}
+		//如果是字符串类型，直接加载
 		if (source instanceof CharSequence) {
 			return load((CharSequence) source);
 		}
@@ -155,10 +159,16 @@ class BeanDefinitionLoader {
 			load(loader);
 		}
 		if (isComponent(source)) {
+			//以注解的方式，将启动类bean信息存入beanDefinitionMap
+			//在查找到@Component注解后，表面该对象为spring bean，然后会将其信息包装成 beanDefinitaion ，添加到容器的 beanDefinitionMap中
 			this.annotatedReader.register(source);
 			return 1;
 		}
 		return 0;
+		/*
+		上面代码中启动类被加载到 beanDefinitionMap中，后续该启动类将作为开启自动化配置的入口，后面一篇文章我会详细的分析，
+		启动类是如何加载，以及自动化配置开启的详细流程。
+		* */
 	}
 
 	private int load(GroovyBeanDefinitionSource source) {
@@ -282,6 +292,8 @@ class BeanDefinitionLoader {
 	private boolean isComponent(Class<?> type) {
 		// This has to be a bit of a guess. The only way to be sure that this type is
 		// eligible is to make a bean definition out of it and try to instantiate it.
+		//判断启动类中是否包含@component注解，可我们的启动类并没有该注解。继续跟进会发现，AnnotationUtils判断是否包含该注解是通过递归实现，注解上的注解若包含指定类型也是可以的。
+		//启动类中包含@SpringBootApplication注解，进一步查找到@SpringBootConfiguration注解，然后查找到@Component注解，最后会查找到@Component注解
 		if (AnnotationUtils.findAnnotation(type, Component.class) != null) {
 			return true;
 		}

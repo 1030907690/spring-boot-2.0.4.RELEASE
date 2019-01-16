@@ -49,12 +49,34 @@ public class EventPublishingRunListener implements SpringApplicationRunListener,
 
 	private final SimpleApplicationEventMulticaster initialMulticaster;
 
+	/* 读取spring.factories文件 通过反射获取实例时会触发EventPublishingRunListener的构造函数*/
 	public EventPublishingRunListener(SpringApplication application, String[] args) {
 		this.application = application;
 		this.args = args;
 		this.initialMulticaster = new SimpleApplicationEventMulticaster();
 		for (ApplicationListener<?> listener : application.getListeners()) {
+			//重点来看一下addApplicationListener方法
 			this.initialMulticaster.addApplicationListener(listener);
+
+			/*
+			public void addApplicationListener(ApplicationListener<?> listener) {
+				Object var2 = this.retrievalMutex;
+				synchronized(this.retrievalMutex) {
+					Object singletonTarget = AopProxyUtils.getSingletonTarget(listener);
+					if (singletonTarget instanceof ApplicationListener) {
+						this.defaultRetriever.applicationListeners.remove(singletonTarget);
+					}
+					//内部类对象
+					this.defaultRetriever.applicationListeners.add(listener);
+					this.retrieverCache.clear();
+        }
+    }
+
+    上述方法定义在SimpleApplicationEventMulticaster父类AbstractApplicationEventMulticaster中。
+    关键代码为this.defaultRetriever.applicationListeners.add(listener);，这是一个内部类，
+    用来保存所有的监听器。也就是在这一步，将spring.factories中的监听器传递到SimpleApplicationEventMulticaster中。
+
+			* */
 		}
 	}
 
@@ -63,8 +85,19 @@ public class EventPublishingRunListener implements SpringApplicationRunListener,
 		return 0;
 	}
 
+	/*
+	执行到是 doInvokeListener 因为我们的事件类型为ApplicationEvent，所以会执行onApplicationStartedEvent((ApplicationStartedEvent) event);。
+	springBoot会在运行过程中的不同阶段，发送各种事件，来执行对应监听器的对应方法。大同小异，别的监听器执行流程这里不再赘述，后面会有单独的详解。
+	* */
 	@Override
 	public void starting() {
+		//关键代码，这里是创建application启动事件`ApplicationStartingEvent`
+		/*
+		EventPublishingRunListener这个是springBoot框架中最早执行的监听器，在该监听器执行started()方法时，会继续发布事件，
+		也就是事件传递。这种实现主要还是基于spring的事件机制。
+		* */
+
+		//里面判断是否配置有线程池 ,如果有线程池则用线程池执行,否则同步执行
 		this.initialMulticaster.multicastEvent(
 				new ApplicationStartingEvent(this.application, this.args));
 	}

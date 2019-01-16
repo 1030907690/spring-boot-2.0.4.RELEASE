@@ -151,6 +151,7 @@ import org.springframework.web.context.support.StandardServletEnvironment;
  * @see #run(Class[], String[])
  * @see #SpringApplication(Class...)
  */
+//目前注释大部分来源  https://blog.csdn.net/woshilijiuyi/column/info/26175
 public class SpringApplication {
 
 	/**
@@ -164,6 +165,10 @@ public class SpringApplication {
 	 * The class name of application context that will be used by default for web
 	 * environments.
 	 */
+	/*
+	注意：在 springBoot2版本以前，该容器的名称为 AnnotationConfigServletWebServerApplicationContext，
+	在新的版本中才改名为 AnnotationConfigServletWebServerApplicationContext。
+	* */
 	public static final String DEFAULT_WEB_CONTEXT_CLASS = "org.springframework.boot."
 			+ "web.servlet.context.AnnotationConfigServletWebServerApplicationContext";
 
@@ -264,13 +269,22 @@ public class SpringApplication {
 		this.resourceLoader = resourceLoader;
 		Assert.notNull(primarySources, "PrimarySources must not be null");
 		this.primarySources = new LinkedHashSet<>(Arrays.asList(primarySources));
+		//设置servlet环境
 		this.webApplicationType = deduceWebApplicationType();
+		//获取ApplicationContextInitializer，也是在这里开始首次加载spring.factories文件
+		//ApplicationContextInitializer是spring组件spring-context组件中的一个接口，主要是spring ioc容器刷新之前的一个回调接口，用于处于自定义逻辑。
 		setInitializers((Collection) getSpringFactoriesInstances(
 				ApplicationContextInitializer.class));
+		//获取监听器，这里是第二次加载spring.factories文件
 		setListeners((Collection) getSpringFactoriesInstances(ApplicationListener.class));
 		this.mainApplicationClass = deduceMainApplicationClass();
+		System.out.println("mainApplicationClass = [" + mainApplicationClass + "]");
 	}
 
+
+	/***
+	 这里主要是通过判断REACTIVE相关的字节码是否存在，如果不存在，则web环境即为SERVLET类型。这里设置好web环境类型，在后面会根据类型初始化对应环境。
+	 * */
 	private WebApplicationType deduceWebApplicationType() {
 		if (ClassUtils.isPresent(REACTIVE_WEB_ENVIRONMENT_CLASS, null)
 				&& !ClassUtils.isPresent(MVC_WEB_ENVIRONMENT_CLASS, null)
@@ -285,6 +299,9 @@ public class SpringApplication {
 		return WebApplicationType.SERVLET;
 	}
 
+
+
+	//推断主应用程序类
 	private Class<?> deduceMainApplicationClass() {
 		try {
 			StackTraceElement[] stackTrace = new RuntimeException().getStackTrace();
@@ -307,28 +324,41 @@ public class SpringApplication {
 	 * @return a running {@link ApplicationContext}
 	 */
 	public ConfigurableApplicationContext run(String... args) {
+		//时间监控
 		StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
 		ConfigurableApplicationContext context = null;
 		Collection<SpringBootExceptionReporter> exceptionReporters = new ArrayList<>();
+		//java.awt.headless是J2SE的一种模式用于在缺少显示屏、键盘或者鼠标时的系统配置，很多监控工具如jconsole 需要将该值设置为true，系统变量默认为true
 		configureHeadlessProperty();
+		//获取spring.factories中的监听器变量，args为指定的参数数组，默认为当前类SpringApplication
+		//第一步：获取并启动监听器
 		SpringApplicationRunListeners listeners = getRunListeners(args);
+		//获取的监听器为EventPublishingRunListener，从名字可以看出是启动事件发布监听器，主要用来发布启动事件。
 		listeners.starting();
 		try {
 			ApplicationArguments applicationArguments = new DefaultApplicationArguments(
 					args);
+			//第二步：构造容器环境
 			ConfigurableEnvironment environment = prepareEnvironment(listeners,
 					applicationArguments);
+			//设置需要忽略的bean
 			configureIgnoreBeanInfo(environment);
+			//打印banner
 			Banner printedBanner = printBanner(environment);
+			//第三步：创建容器
 			context = createApplicationContext();
+			//报告错误信息
+			////读取spring.factories 得到SpringBootExceptionReporter接口的实现类
 			exceptionReporters = getSpringFactoriesInstances(
 					SpringBootExceptionReporter.class,
 					new Class[] { ConfigurableApplicationContext.class }, context);
-			//准备上下文环境   The following profiles are active: dev  选择环境
+			//准备上下文环境   The following profiles are active: dev  选择环境  第五步：准备容器
 			prepareContext(context, environment, listeners, applicationArguments,
 					printedBanner);
+			//第六步：刷新容器
 			refreshContext(context);
+			//第七步：刷新容器后的扩展接口
 			afterRefresh(context, applicationArguments);
 			stopWatch.stop();
 			if (this.logStartupInfo) {
@@ -357,9 +387,15 @@ public class SpringApplication {
 			SpringApplicationRunListeners listeners,
 			ApplicationArguments applicationArguments) {
 		// Create and configure the environment
+		//获取对应的ConfigurableEnvironment
 		ConfigurableEnvironment environment = getOrCreateEnvironment();
+		//配置
 		configureEnvironment(environment, applicationArguments.getSourceArgs());
+		//发布环境已准备事件，这是第二次发布事件
+		//来看一下listeners.environmentPrepared(environment);，上面已经提到了，这里是第二次发布事件。什么事件呢？
+		//顾名思义，系统环境初始化完成的事件。
 		listeners.environmentPrepared(environment);
+		//
 		bindToSpringApplication(environment);
 		if (this.webApplicationType == WebApplicationType.NONE) {
 			environment = new EnvironmentConverter(getClassLoader())
@@ -369,29 +405,43 @@ public class SpringApplication {
 		return environment;
 	}
 
+	/*
+	这一步主要是在容器刷新之前的准备动作。包含一个非常关键的操作：将启动类注入容器，为后续开启自动化配置奠定基础
+	* */
 	private void prepareContext(ConfigurableApplicationContext context,
 			ConfigurableEnvironment environment, SpringApplicationRunListeners listeners,
 			ApplicationArguments applicationArguments, Banner printedBanner) {
+		//设置容器环境，包括各种变量
 		context.setEnvironment(environment);
+		//执行容器后置处理
 		postProcessApplicationContext(context);
+		// 执行容器中的ApplicationContextInitializer（包括 spring.factories和自定义的实例）
 		applyInitializers(context);
+		//发送容器已经准备好的事件，通知各监听器
 		listeners.contextPrepared(context);
+		////打印log
 		if (this.logStartupInfo) {
 			logStartupInfo(context.getParent() == null);
 			logStartupProfileInfo(context);
 		}
 
 		// Add boot specific singleton beans
+		//注册启动参数bean，这里将容器指定的参数封装成bean，注入容器
 		context.getBeanFactory().registerSingleton("springApplicationArguments",
 				applicationArguments);
+
+		//设置banner
 		if (printedBanner != null) {
 			context.getBeanFactory().registerSingleton("springBootBanner", printedBanner);
 		}
 
 		// Load the sources
+		//获取我们的启动类指定的参数，可以是多个
 		Set<Object> sources = getAllSources();
 		Assert.notEmpty(sources, "Sources must not be empty");
+		//加载我们的启动类，将启动类注入容器
 		load(context, sources.toArray(new Object[0]));
+		//发布容器已加载事件
 		listeners.contextLoaded(context);
 	}
 
@@ -412,6 +462,10 @@ public class SpringApplication {
 				SYSTEM_PROPERTY_JAVA_AWT_HEADLESS, Boolean.toString(this.headless)));
 	}
 
+	/*
+	上面可以看到，args本身默认为空，但是在获取监听器的方法中，
+	getSpringFactoriesInstances( SpringApplicationRunListener.class, types, this, args)将当前对象作为参数，该方法用来获取spring.factories对应的监听器：
+	* */
 	private SpringApplicationRunListeners getRunListeners(String[] args) {
 		Class<?>[] types = new Class<?>[] { SpringApplication.class, String[].class };
 		return new SpringApplicationRunListeners(logger, getSpringFactoriesInstances(
@@ -434,6 +488,7 @@ public class SpringApplication {
 		return instances;
 	}
 
+	/*整个 springBoot 框架中获取factories的方式统一如下*/
 	@SuppressWarnings("unchecked")
 	private <T> List<T> createSpringFactoriesInstances(Class<T> type,
 			Class<?>[] parameterTypes, ClassLoader classLoader, Object[] args,
@@ -441,10 +496,12 @@ public class SpringApplication {
 		List<T> instances = new ArrayList<>(names.size());
 		for (String name : names) {
 			try {
+				//装载class文件到内存
 				Class<?> instanceClass = ClassUtils.forName(name, classLoader);
 				Assert.isAssignable(type, instanceClass);
 				Constructor<?> constructor = instanceClass
 						.getDeclaredConstructor(parameterTypes);
+				//主要通过反射创建实例
 				T instance = (T) BeanUtils.instantiateClass(constructor, args);
 				instances.add(instance);
 			}
@@ -456,6 +513,10 @@ public class SpringApplication {
 		return instances;
 	}
 
+
+	/*
+	前面已经提到，environment已经被设置了servlet类型，所以这里创建的是环境对象是StandardServletEnvironment。
+	* */
 	private ConfigurableEnvironment getOrCreateEnvironment() {
 		if (this.environment != null) {
 			return this.environment;
@@ -574,6 +635,10 @@ public class SpringApplication {
 	 * @return the application context (not yet refreshed)
 	 * @see #setApplicationContextClass(Class)
 	 */
+	/*
+	上面可以看出，这里创建容器的类型 还是根据webApplicationType进行判断的，上一篇已经讲述了该变量如何赋值的过程。因为该类型为SERVLET类型，
+	所以会通过反射装载对应的字节码
+	* */
 	protected ConfigurableApplicationContext createApplicationContext() {
 		Class<?> contextClass = this.applicationContextClass;
 		if (contextClass == null) {
@@ -604,6 +669,11 @@ public class SpringApplication {
 	 * apply additional processing as required.
 	 * @param context the application context
 	 */
+	/*
+	这里默认不执行任何逻辑，因为beanNameGenerator和resourceLoader默认为空。之所以这样做，是springBoot留给我们的扩展处理方式，
+	类似于这样的扩展，spring中也有很多。
+	* */
+
 	protected void postProcessApplicationContext(ConfigurableApplicationContext context) {
 		if (this.beanNameGenerator != null) {
 			context.getBeanFactory().registerSingleton(
@@ -686,7 +756,18 @@ public class SpringApplication {
 	 * @param context the context to load beans into
 	 * @param sources the sources to load
 	 */
+	/*
+	加载启动指定类（重点）
+	这里会将我们的启动类加载spring容器beanDefinitionMap中，为后续springBoot 自动化配置奠定基础，springBoot为我们提供的各种注解配置也与此有关
+	* */
 	protected void load(ApplicationContext context, Object[] sources) {
+		/*
+		这里参数即为我们项目启动时传递的参数：SpringApplication.run(GamePayApplication.class, args);
+	由于我们指定了启动类，所以上面也就是加载启动类到容器。
+
+	需要注意的是，springBoot2会优先选择groovy加载方式，找不到再选用java方式。或许groovy动态加载class文件的性能更胜一筹。
+
+			* */
 		if (logger.isDebugEnabled()) {
 			logger.debug(
 					"Loading source " + StringUtils.arrayToCommaDelimitedString(sources));
@@ -760,7 +841,8 @@ public class SpringApplication {
 	 */
 	protected void refresh(ApplicationContext applicationContext) {
 		Assert.isInstanceOf(AbstractApplicationContext.class, applicationContext);
-		//applicationContext是ServletWebServerApplicationContext
+		//applicationContext是AnnotationConfigServletWebServerApplicationContext  refresh()进入ServletWebServerApplicationContext
+		System.out.println("applicationContext = [" + applicationContext + "]");
 		((AbstractApplicationContext) applicationContext).refresh();
 	}
 
@@ -769,6 +851,9 @@ public class SpringApplication {
 	 * @param context the application context
 	 * @param args the application arguments
 	 */
+	/*
+	刷新容器后的扩展接口
+	* */
 	protected void afterRefresh(ConfigurableApplicationContext context,
 			ApplicationArguments args) {
 	}
@@ -830,12 +915,14 @@ public class SpringApplication {
 		ReflectionUtils.rethrowRuntimeException(exception);
 	}
 
+	/** 报告错误信息 **/
 	private void reportFailure(Collection<SpringBootExceptionReporter> exceptionReporters,
 			Throwable failure) {
 		try {
 			for (SpringBootExceptionReporter reporter : exceptionReporters) {
 				if (reporter.reportException(failure)) {
-					registerLoggedException(failure);
+						//上报错误log
+						registerLoggedException(failure);
 					return;
 				}
 			}
