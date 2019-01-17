@@ -54,6 +54,9 @@ import org.springframework.context.annotation.Conditional;
  *
  * @author Phillip Webb
  */
+/*
+此注解是条件注解,意为仅仅在当前上下文中存在Xxxx对象时，才会实例化一个Bean
+* */
 @Target({ ElementType.TYPE, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
