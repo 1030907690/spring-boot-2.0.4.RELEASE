@@ -521,6 +521,7 @@ public class SpringApplication {
 		if (this.environment != null) {
 			return this.environment;
 		}
+		//springboot应用返回的environment
 		if (this.webApplicationType == WebApplicationType.SERVLET) {
 			return new StandardServletEnvironment();
 		}
@@ -551,13 +552,20 @@ public class SpringApplication {
 	 * @param args arguments passed to the {@code run} method
 	 * @see #configureEnvironment(ConfigurableEnvironment, String[])
 	 */
+	/*
+	一是判断SpringBootApplication是否指定了默认配置，
+	二是加载默认的命令行配置。
+	* */
 	protected void configurePropertySources(ConfigurableEnvironment environment,
 			String[] args) {
+		////获取配置存储集合
 		MutablePropertySources sources = environment.getPropertySources();
+		//	 判断是否有默认配置，默认为空
 		if (this.defaultProperties != null && !this.defaultProperties.isEmpty()) {
 			sources.addLast(
 					new MapPropertySource("defaultProperties", this.defaultProperties));
 		}
+		//加载命令行配置
 		if (this.addCommandLineProperties && args.length > 0) {
 			String name = CommandLinePropertySource.COMMAND_LINE_PROPERTY_SOURCE_NAME;
 			if (sources.contains(name)) {
