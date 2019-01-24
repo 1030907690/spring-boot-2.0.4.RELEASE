@@ -28,6 +28,7 @@ import org.springframework.core.env.Environment;
  *
  * @author Phillip Webb
  */
+//spring boot默认的banner
 class SpringBootBanner implements Banner {
 
 	private static final String[] BANNER = { "",

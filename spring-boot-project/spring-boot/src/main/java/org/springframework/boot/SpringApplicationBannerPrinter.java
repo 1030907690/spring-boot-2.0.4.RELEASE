@@ -82,10 +82,12 @@ class SpringApplicationBannerPrinter {
 		if (this.fallbackBanner != null) {
 			return this.fallbackBanner;
 		}
+		//如果都没有返回spring boot默认的banner
 		return DEFAULT_BANNER;
 	}
 
 	private Banner getTextBanner(Environment environment) {
+		// environment是StandardServletEnvironment 得到 spring.banner.location属性 默认值banner.txt
 		String location = environment.getProperty(BANNER_LOCATION_PROPERTY,
 				DEFAULT_BANNER_LOCATION);
 		Resource resource = this.resourceLoader.getResource(location);
