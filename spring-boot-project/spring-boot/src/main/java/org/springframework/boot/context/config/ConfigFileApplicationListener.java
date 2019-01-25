@@ -299,15 +299,15 @@ public class ConfigFileApplicationListener
 	private class Loader {
 
 		private final Log logger = ConfigFileApplicationListener.this.logger;
-
+		//当前环境
 		private final ConfigurableEnvironment environment;
-
+		//类加载器，可以在项目启动时通过 SpringApplication 构造方法指定，默认采用 Launcher.AppClassLoader加载器
 		private final ResourceLoader resourceLoader;
-
+		//资源加载工具类
 		private final List<PropertySourceLoader> propertySourceLoaders;
-
+		//LIFO队列
 		private Deque<Profile> profiles;
-
+		//已处理过的文件
 		private List<Profile> processedProfiles;
 
 		private boolean activatedProfiles;
@@ -318,8 +318,10 @@ public class ConfigFileApplicationListener
 
 		Loader(ConfigurableEnvironment environment, ResourceLoader resourceLoader) {
 			this.environment = environment;
+			//获取类加载器
 			this.resourceLoader = (resourceLoader != null) ? resourceLoader
 					: new DefaultResourceLoader();
+			//获取propertySourceLoaders
 			this.propertySourceLoaders = SpringFactoriesLoader.loadFactories(
 					PropertySourceLoader.class, getClass().getClassLoader());
 		}
@@ -329,7 +331,9 @@ public class ConfigFileApplicationListener
 			this.processedProfiles = new LinkedList<>();
 			this.activatedProfiles = false;
 			this.loaded = new LinkedHashMap<>();
+			//初始化逻辑
 			initializeProfiles();
+			//定位解析资源文件
 			while (!this.profiles.isEmpty()) {
 				Profile profile = this.profiles.poll();
 				if (profile != null && !profile.isDefaultProfile()) {
@@ -339,6 +343,7 @@ public class ConfigFileApplicationListener
 						addToLoaded(MutablePropertySources::addLast, false));
 				this.processedProfiles.add(profile);
 			}
+			//对加载过的配置文件进行排序
 			load(null, this::getNegativeProfileFilter,
 					addToLoaded(MutablePropertySources::addFirst, true));
 			addLoadedPropertySources();
@@ -349,15 +354,25 @@ public class ConfigFileApplicationListener
 		 * profiles and any {@code spring.profiles.active}/{@code spring.profiles.include}
 		 * properties that are already set.
 		 */
+		/*
+		1）判断是否指定了profile，如果没有，添加默认环境：default。后面的解析流程会解析default文件，比如：application-default.yml、application-default.properties。
+
+		注意：在第2步中我们提到了additionalProfiles属性，如果我们通过该属性指定了profile，这里就不会加载默认的配置文件，根据我们指定的profile进行匹配。
+		2）添加一个null的profile，主要用来加载没有指定profile的配置文件，比如：application.properties
+		因为 profiles 采用了 LIFO 队列，后进先出。所以会先加载profile为null的配置文件，也就是匹配application.properties、application.yml。
+
+		* */
 		private void initializeProfiles() {
 			// The default profile for these purposes is represented as null. We add it
 			// first so that it is processed first and has lowest priority.
+			//这里添加一个为null的profile，主要是加载默认的配置文件
 			this.profiles.add(null);
 			Set<Profile> activatedViaProperty = getProfilesActivatedViaProperty();
 			this.profiles.addAll(getOtherActiveProfiles(activatedViaProperty));
 			// Any pre-existing active profiles set via property sources (e.g.
 			// System properties) take precedence over those added in config files.
 			addActiveProfiles(activatedViaProperty);
+			//只有空配置文件
 			if (this.profiles.size() == 1) { // only has null profile
 				for (String defaultProfileName : this.environment.getDefaultProfiles()) {
 					Profile defaultProfile = new Profile(defaultProfileName, true);
@@ -445,9 +460,11 @@ public class ConfigFileApplicationListener
 
 		private void load(Profile profile, DocumentFilterFactory filterFactory,
 				DocumentConsumer consumer) {
+			//获取默认的配置文件路径
 			getSearchLocations().forEach((location) -> {
 				boolean isFolder = location.endsWith("/");
 				Set<String> names = isFolder ? getSearchNames() : NO_SEARCH_NAMES;
+				//循环加载
 				names.forEach(
 						(name) -> load(location, name, profile, filterFactory, consumer));
 			});
