@@ -387,6 +387,7 @@ public class SpringApplication {
 			SpringApplicationRunListeners listeners,
 			ApplicationArguments applicationArguments) {
 		// Create and configure the environment
+		/*Environment接口提供了4种实现方式，StandardEnvironment、StandardServletEnvironment和MockEnvironment、StandardReactiveWebEnvironment，分别代表普通程序、Web程序、测试程序的环境、响应式web环境*/
 		//获取对应的ConfigurableEnvironment
 		ConfigurableEnvironment environment = getOrCreateEnvironment();
 		//配置
@@ -395,7 +396,7 @@ public class SpringApplication {
 		//来看一下listeners.environmentPrepared(environment);，上面已经提到了，这里是第二次发布事件。什么事件呢？
 		//顾名思义，系统环境初始化完成的事件。
 		listeners.environmentPrepared(environment);
-		//
+		//绑定到SpringApplication
 		bindToSpringApplication(environment);
 		if (this.webApplicationType == WebApplicationType.NONE) {
 			environment = new EnvironmentConverter(getClassLoader())
@@ -860,7 +861,7 @@ public class SpringApplication {
 	 * @param args the application arguments
 	 */
 	/*
-	刷新容器后的扩展接口
+	刷新容器后的扩展接口  设计模式中的模板方法，默认为空实现。如果有自定义需求，可以重写该方法。比如打印一些启动结束log，或者一些其它后置处理。
 	* */
 	protected void afterRefresh(ConfigurableApplicationContext context,
 			ApplicationArguments args) {
