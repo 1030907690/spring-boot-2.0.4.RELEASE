@@ -8,6 +8,8 @@
 		<version>${revision}</version>
 	</parent>
 	<artifactId>spring-boot-project</artifactId>
+	<groupId>org.springframework.boot</groupId>
+	<version>1.0.0</version>
 	<packaging>pom</packaging>
 	<name>Spring Boot Build</name>
 	<description>Spring Boot Build</description>
@@ -30,5 +32,29 @@
 		<module>spring-boot-cli</module>
 		<module>spring-boot-docs</module>
 		<module>game-pay</module>
+
+		<!-- spring 5.0.8 src -->
+		<module>spring-websocket</module>
+		<module>spring-webmvc</module>
+		<module>spring-webflux</module>
+		<module>spring-web</module>
+		<module>spring-tx</module>
+		<module>spring-test</module>
+		<module>spring-oxm</module>
+		<module>spring-orm</module>
+		<module>spring-messaging</module>
+		<module>spring-jms</module>
+		<module>spring-jdbc</module>
+		<module>spring-jcl</module>
+		<module>spring-instrument</module>
+		<module>spring-expression</module>
+		<module>spring-core</module>
+		<module>spring-context-support</module>
+		<module>spring-context-indexer</module>
+		<module>spring-context</module>
+		<module>spring-beans</module>
+		<module>spring-aspects</module>
+		<module>spring-aop</module>
+
 	</modules>
 </project>
