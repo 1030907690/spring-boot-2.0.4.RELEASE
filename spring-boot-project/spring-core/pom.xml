@@ -12,4 +12,24 @@
 	<packaging>jar</packaging>
 	<name>Spring Boot Build</name>
 	<description>Spring Boot Build</description>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>spring-cglib-repack</groupId>
+			<artifactId>org.springframework.cglib</artifactId>
+			<version>3.2.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/libs/spring-cglib-repack-3.2.0.jar</systemPath>
+		</dependency>
+
+
+		<dependency>
+			<groupId>spring-objenesis-repack</groupId>
+			<artifactId>org.springframework.objenesis</artifactId>
+			<version>2.1</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/libs/spring-objenesis-repack-2.1.jar</systemPath>
+		</dependency>
+	</dependencies>
 </project>
