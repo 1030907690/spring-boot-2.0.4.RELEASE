@@ -12,4 +12,5 @@
 	<packaging>jar</packaging>
 	<name>Spring Boot Build</name>
 	<description>Spring Boot Build</description>
+	<version>5.0.8.RELEASE</version>
 </project>

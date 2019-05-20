@@ -10,6 +10,15 @@
 	<artifactId>spring-expression</artifactId>
 	<groupId>org.springframework</groupId>
 	<packaging>jar</packaging>
-	<name>Spring Boot Build</name>
+	<name>Spring-expression</name>
 	<description>Spring Boot Build</description>
+	<version>5.0.8.RELEASE</version>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>5.0.8.RELEASE</version>
+		</dependency>
+	</dependencies>
 </project>

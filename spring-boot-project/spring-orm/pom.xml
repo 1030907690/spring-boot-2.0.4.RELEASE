@@ -9,7 +9,22 @@
 	</parent>
 	<artifactId>spring-orm</artifactId>
 	<groupId>org.springframework</groupId>
+	<version>5.0.8.RELEASE</version>
 	<packaging>jar</packaging>
-	<name>Spring Boot Build</name>
+	<name>spring-orm</name>
 	<description>Spring Boot Build</description>
+
+	<dependencies>
+		<dependency>
+			<artifactId>spring-core</artifactId>
+			<groupId>org.springframework</groupId>
+			<version>5.0.8.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>5.0.8.RELEASE</version>
+		</dependency>
+	</dependencies>
 </project>

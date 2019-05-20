@@ -10,6 +10,27 @@
 	<artifactId>spring-oxm</artifactId>
 	<groupId>org.springframework</groupId>
 	<packaging>jar</packaging>
-	<name>Spring Boot Build</name>
+	<name>spring-oxm</name>
 	<description>Spring Boot Build</description>
+	<version>5.0.8.RELEASE</version>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>5.0.8.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.thoughtworks.xstream</groupId>
+			<artifactId>xstream</artifactId>
+			<version>1.4.9</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>5.0.8.RELEASE</version>
+		</dependency>
+	</dependencies>
 </project>

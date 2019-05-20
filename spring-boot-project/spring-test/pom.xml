@@ -10,6 +10,35 @@
 	<artifactId>spring-test</artifactId>
 	<groupId>org.springframework</groupId>
 	<packaging>jar</packaging>
-	<name>Spring Boot Build</name>
+	<name>spring-test</name>
 	<description>Spring Boot Build</description>
+	<version>5.0.8.RELEASE</version>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>5.0.8.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>5.0.8.RELEASE</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/commons-logging/commons-logging -->
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>5.0.8.RELEASE</version>
+		</dependency>
+
+	</dependencies>
 </project>

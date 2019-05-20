@@ -11,9 +11,6 @@ public class GamePayApplication {
 	}
 
 
-	/*
-	*如果加入JPA不配置可能报错Hikari是因为 DataSourceAutoConfiguration 会自动注入初始化
-	* */
-
+	
 
 }

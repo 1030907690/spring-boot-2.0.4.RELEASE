@@ -1,35 +1,135 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-project</artifactId>
-		<version>1.0.0</version>
-	</parent>
-	<artifactId>spring-core</artifactId>
-	<groupId>org.springframework</groupId>
-	<packaging>jar</packaging>
-	<name>Spring Boot Build</name>
-	<description>Spring Boot Build</description>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-project</artifactId>
+        <version>1.0.0</version>
+    </parent>
+    <artifactId>spring-core</artifactId>
+    <groupId>org.springframework</groupId>
+    <packaging>jar</packaging>
+    <name>spring-core</name>
+    <description>Spring Boot Build</description>
+    <version>5.0.8.RELEASE</version>
 
-	<dependencies>
+    <dependencies>
 
-		<dependency>
-			<groupId>spring-cglib-repack</groupId>
-			<artifactId>org.springframework.cglib</artifactId>
-			<version>3.2.0</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/libs/spring-cglib-repack-3.2.0.jar</systemPath>
-		</dependency>
+        <dependency>
+            <groupId>spring-cglib-repack</groupId>
+            <artifactId>org.springframework.cglib</artifactId>
+            <version>3.2.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/libs/spring-cglib-repack-3.2.0.jar</systemPath>
+        </dependency>
 
 
-		<dependency>
-			<groupId>spring-objenesis-repack</groupId>
-			<artifactId>org.springframework.objenesis</artifactId>
-			<version>2.1</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/libs/spring-objenesis-repack-2.1.jar</systemPath>
-		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>spring-objenesis-repack</groupId>
+            <artifactId>org.springframework.objenesis</artifactId>
+            <version>2.1</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/libs/spring-objenesis-repack-2.1.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.2</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.reactivestreams/reactive-streams -->
+        <dependency>
+            <groupId>org.reactivestreams</groupId>
+            <artifactId>reactive-streams</artifactId>
+            <version>1.0.2</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-reflect -->
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-reflect</artifactId>
+            <version>1.3.31</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-core</artifactId>
+            <version>3.1.8.RELEASE</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/io.reactivex/rxjava-reactive-streams -->
+        <dependency>
+            <groupId>io.reactivex</groupId>
+            <artifactId>rxjava-reactive-streams</artifactId>
+            <version>1.2.1</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/io.reactivex/rxjava -->
+        <dependency>
+            <groupId>io.reactivex</groupId>
+            <artifactId>rxjava</artifactId>
+            <version>1.3.8</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/io.reactivex/rxjava -->
+        <dependency>
+            <groupId>io.reactivex.rxjava2</groupId>
+            <artifactId>rxjava</artifactId>
+            <version>2.1.16</version>
+        </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/net.sf.jopt-simple/jopt-simple -->
+        <dependency>
+            <groupId>net.sf.jopt-simple</groupId>
+            <artifactId>jopt-simple</artifactId>
+            <version>5.0.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-buffer</artifactId>
+            <version>4.1.16.Final</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.9.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>2.19.0</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-all</artifactId>
+            <version>1.3</version>
+            <scope>test</scope>
+        </dependency>
+
+
+
+
+    </dependencies>
 </project>

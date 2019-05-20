@@ -9,7 +9,16 @@
 	</parent>
 	<artifactId>spring-websocket</artifactId>
 	<groupId>org.springframework</groupId>
+	<version>5.0.8.RELEASE</version>
 	<packaging>jar</packaging>
-	<name>Spring Boot Build</name>
+	<name>spring-websocket</name>
 	<description>Spring Boot Build</description>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>5.0.8.RELEASE</version>
+		</dependency>
+	</dependencies>
 </project>

@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/spring-boot-project" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/spring-boot-project/game-pay" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-boot-project/spring-aop" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-boot-project/spring-aspects" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-boot-project/spring-beans" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/spring-boot-project/spring-boot" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/spring-boot-project/spring-boot-actuator" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/spring-boot-project/spring-boot-actuator-autoconfigure" charset="UTF-8" />
@@ -76,6 +80,24 @@
     <file url="file://$PROJECT_DIR$/spring-boot-project/spring-boot-tools/spring-boot-loader-tools" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/spring-boot-project/spring-boot-tools/spring-boot-maven-plugin" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/spring-boot-project/spring-boot-tools/spring-boot-test-support" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-boot-project/spring-context" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-boot-project/spring-context-indexer" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-boot-project/spring-context-support" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-boot-project/spring-core" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-boot-project/spring-expression" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-boot-project/spring-instrument" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-boot-project/spring-jcl" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-boot-project/spring-jdbc" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-boot-project/spring-jms" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-boot-project/spring-messaging" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-boot-project/spring-orm" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-boot-project/spring-oxm" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-boot-project/spring-test" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-boot-project/spring-tx" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-boot-project/spring-web" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-boot-project/spring-webflux" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-boot-project/spring-webmvc" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-boot-project/spring-websocket" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/spring-boot-samples-invoker" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/spring-boot-tests" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/spring-boot-tests/spring-boot-integration-tests" charset="UTF-8" />
