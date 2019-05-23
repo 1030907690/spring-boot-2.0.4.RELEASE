@@ -45,7 +45,7 @@
 		<module>game-pay</module>
 
 		<!-- spring 5.0.8 src -->
-		<module>spring-websocket</module>
+		<!--<module>spring-websocket</module>
 		<module>spring-webmvc</module>
 		<module>spring-webflux</module>
 		<module>spring-web</module>
@@ -65,7 +65,7 @@
 		<module>spring-context</module>
 		<module>spring-beans</module>
 		<module>spring-aspects</module>
-		<module>spring-aop</module>
+		<module>spring-aop</module>-->
 
 	</modules>
 
