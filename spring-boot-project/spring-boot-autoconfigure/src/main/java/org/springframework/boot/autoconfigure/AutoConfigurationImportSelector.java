@@ -153,6 +153,13 @@ public class AutoConfigurationImportSelector
 	 * attributes}
 	 * @return a list of candidate configurations
 	 */
+
+	/*
+	从上面的函数中我们看到了META-INF/spring.factories ， 在我们之前演示的环节，按照约
+	定大于配置的原则， Starter 如果要生效则必须要在META-INF文件下下建立spring.factories 文
+	件，并把相关的配置类声明在里面，虽然这仅仅是一个报错异常提示，但是其实我们已经可以
+	推断出来这一定就是这个逻辑的处理之处
+	* */
 	protected List<String> getCandidateConfigurations(AnnotationMetadata metadata,
 			AnnotationAttributes attributes) {
 		List<String> configurations = SpringFactoriesLoader.loadFactoryNames(
