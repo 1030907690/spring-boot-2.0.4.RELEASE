@@ -69,6 +69,10 @@ import org.springframework.boot.configurationprocessor.metadata.ItemMetadata;
 @SupportedAnnotationTypes({ "*" })
 public class ConfigurationMetadataAnnotationProcessor extends AbstractProcessor {
 
+
+	public static void main(String[] args) {
+		System.out.println("1");
+	}
 	static final String ADDITIONAL_METADATA_LOCATIONS_OPTION = "org.springframework.boot."
 			+ "configurationprocessor.additionalMetadataLocations";
 
