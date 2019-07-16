@@ -23,10 +23,21 @@ import java.util.Properties;
 @SpringBootApplication
 public class GamePayApplication {
 
+
+
 	public static void main(String[] args) {
 		SpringApplication.run(GamePayApplication.class, args);
 		//loadYml();
 	}
+
+
+
+
+
+
+	/*
+	spring boot 对于配置文件的处理用的PropertySourcesPlaceholderConfigurer ，通过EnvironmentAware接口封装在environment属性中； 只是真正解析的工作是ConfigFileApplicationListener完成的，封装在
+	* */
 
 
 	/***
