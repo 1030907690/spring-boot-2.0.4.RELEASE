@@ -32,6 +32,9 @@ import org.springframework.core.io.support.PropertiesLoaderUtils;
  * @author Phillip Webb
  * @author Madhura Bhave
  */
+/***
+ *读取配置文件
+ * */
 public class PropertiesPropertySourceLoader implements PropertySourceLoader {
 
 	private static final String XML_FILE_EXTENSION = ".xml";

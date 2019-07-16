@@ -33,6 +33,9 @@ import org.springframework.util.ClassUtils;
  * @author Phillip Webb
  * @author Andy Wilkinson
  */
+/***
+ * 解析yml文件
+ * */
 public class YamlPropertySourceLoader implements PropertySourceLoader {
 
 	@Override

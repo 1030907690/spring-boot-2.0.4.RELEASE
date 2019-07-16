@@ -516,6 +516,7 @@ public class ConfigFileApplicationListener
 				}
 			}
 			// Also try the profile-specific section (if any) of the normal file
+			// 读取配置文件
 			load(loader, prefix + fileExtension, profile, profileFilter, consumer);
 		}
 
@@ -539,6 +540,7 @@ public class ConfigFileApplicationListener
 					return;
 				}
 				String name = "applicationConfig: [" + location + "]";
+				// 载入配置文件
 				List<Document> documents = loadDocuments(loader, name, resource);
 				if (CollectionUtils.isEmpty(documents)) {
 					if (this.logger.isTraceEnabled()) {
@@ -583,6 +585,7 @@ public class ConfigFileApplicationListener
 			DocumentsCacheKey cacheKey = new DocumentsCacheKey(loader, resource);
 			List<Document> documents = this.loadDocumentsCache.get(cacheKey);
 			if (documents == null) {
+				// 读取配置文件
 				List<PropertySource<?>> loaded = loader.load(name, resource);
 				documents = asDocuments(loaded);
 				this.loadDocumentsCache.put(cacheKey, documents);
