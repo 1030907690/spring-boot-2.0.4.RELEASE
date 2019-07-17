@@ -48,6 +48,14 @@ import org.springframework.context.annotation.Configuration;
  * @author Brian Clozel
  * @author Stephane Nicoll
  */
+
+/*
+这个类中包含了Tomcat 、Jetty 、Undertow 3 种类型的服务器自动注册逻辑，而选择条件则
+是通过＠Conditiona!OnClass 注解控制。我们之前讲解过ConditionalOnProperty 注解的实现逻辑，
+而＠Conditiona!OnClass 实现逻辑与之类似，对应的类在classpath 目录下存在时，才会去解析
+对应的配置文件。这也就解释了之所以Spring 默认会启动Tomcat 正是由于在启动的类目录下存在
+Servi et.class 、Tomcat.class ， 而这个依赖是由Spring 自己在spring-boot-starter-web 中默认引人。
+* */
 class ServletWebServerFactoryConfiguration {
 
 	@Configuration
@@ -57,6 +65,7 @@ class ServletWebServerFactoryConfiguration {
 
 		@Bean
 		public TomcatServletWebServerFactory tomcatServletWebServerFactory() {
+			//创建tomcat web服务器工厂
 			return new TomcatServletWebServerFactory();
 		}
 

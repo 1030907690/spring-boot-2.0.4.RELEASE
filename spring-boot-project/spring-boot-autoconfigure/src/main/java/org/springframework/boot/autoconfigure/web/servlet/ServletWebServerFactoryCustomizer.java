@@ -48,6 +48,7 @@ public class ServletWebServerFactoryCustomizer implements
 
 	@Override
 	public void customize(ConfigurableServletWebServerFactory factory) {
+		// 设置web 容器的属性
 		PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
 		map.from(this.serverProperties::getPort).to(factory::setPort);
 		map.from(this.serverProperties::getAddress).to(factory::setAddress);

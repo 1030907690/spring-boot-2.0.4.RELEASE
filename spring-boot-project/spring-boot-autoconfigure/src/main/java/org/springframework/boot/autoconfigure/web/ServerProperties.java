@@ -55,6 +55,10 @@ import org.springframework.util.StringUtils;
  * @author Brian Clozel
  * @author Olivier Lamy
  */
+
+/***
+ * spring boot 服务器的配置
+ * */
 @ConfigurationProperties(prefix = "server", ignoreUnknownFields = true)
 public class ServerProperties {
 
