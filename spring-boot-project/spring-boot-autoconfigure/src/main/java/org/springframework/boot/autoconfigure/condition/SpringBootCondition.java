@@ -35,6 +35,9 @@ import org.springframework.util.StringUtils;
  * @author Phillip Webb
  * @author Greg Turnquist
  */
+/***
+ * 条件注解
+ * */
 public abstract class SpringBootCondition implements Condition {
 
 	private final Log logger = LogFactory.getLog(getClass());
