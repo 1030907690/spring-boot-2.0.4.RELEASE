@@ -395,7 +395,7 @@ public class SpringApplication {
 		//发布环境已准备事件，这是第二次发布事件
 		//来看一下listeners.environmentPrepared(environment);，上面已经提到了，这里是第二次发布事件。什么事件呢？
 		//顾名思义，系统环境初始化完成的事件。
-		listeners.environmentPrepared(environment);
+		listeners.environmentPrepared(environment); // 解析配置就在此处完成
 		//绑定到SpringApplication
 		bindToSpringApplication(environment);
 		if (this.webApplicationType == WebApplicationType.NONE) {
