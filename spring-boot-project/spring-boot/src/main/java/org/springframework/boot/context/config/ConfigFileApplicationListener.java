@@ -351,6 +351,7 @@ public class ConfigFileApplicationListener
 			//对加载过的配置文件进行排序
 			load(null, this::getNegativeProfileFilter,
 					addToLoaded(MutablePropertySources::addFirst, true));
+			// 把配置add到environment环境中
 			addLoadedPropertySources();
 		}
 
@@ -529,6 +530,7 @@ public class ConfigFileApplicationListener
 				DocumentFilter filter, DocumentConsumer consumer) {
 			try {
 				Resource resource = this.resourceLoader.getResource(location);
+				// 如果resource 为空或者 不存在
 				if (resource == null || !resource.exists()) {
 					if (this.logger.isTraceEnabled()) {
 						this.logger.trace("Skipped missing config "
@@ -590,7 +592,7 @@ public class ConfigFileApplicationListener
 			DocumentsCacheKey cacheKey = new DocumentsCacheKey(loader, resource);
 			List<Document> documents = this.loadDocumentsCache.get(cacheKey);
 			if (documents == null) {
-				// 读取配置文件
+				// 真正调用具体实现类读取配置文件
 				List<PropertySource<?>> loaded = loader.load(name, resource);
 				documents = asDocuments(loaded);
 				this.loadDocumentsCache.put(cacheKey, documents);
@@ -709,6 +711,7 @@ public class ConfigFileApplicationListener
 			for (MutablePropertySources sources : loaded) {
 				for (PropertySource<?> source : sources) {
 					if (added.add(source.getName())) {
+						// 将配置文件添加到environment 中 如application-dev.yml 的配置
 						addLoadedPropertySource(destination, lastAdded, source);
 						lastAdded = source.getName();
 					}

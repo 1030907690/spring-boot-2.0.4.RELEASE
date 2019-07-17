@@ -50,10 +50,13 @@ public class YamlPropertySourceLoader implements PropertySourceLoader {
 			throw new IllegalStateException("Attempted to load " + name
 					+ " but snakeyaml was not found on the classpath");
 		}
+		// 读取配置
 		List<Map<String, Object>> loaded = new OriginTrackedYamlLoader(resource).load();
 		if (loaded.isEmpty()) {
 			return Collections.emptyList();
 		}
+
+		// 转为 List<PropertySource<?>>类型
 		List<PropertySource<?>> propertySources = new ArrayList<>(loaded.size());
 		for (int i = 0; i < loaded.size(); i++) {
 			String documentNumber = (loaded.size() != 1) ? " (document #" + i + ")" : "";
