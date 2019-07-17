@@ -109,7 +109,7 @@ public class ConfigFileApplicationListener
 
 	// Note the order is from least to most specific (last one wins)
 	//在执行完上述三个监听器流程后 ,ConfigFileApplicationListener会执行该类本身的逻辑。由其内部类Loader加载项目制定路径下的配置文件：
-	// 尝试加载这三个路径下的文件 后面的会覆盖前面的也就是file:./config/优先级最高
+	// 尝试加载这三个路径下的文件 file:./config/优先级最高
 	private static final String DEFAULT_SEARCH_LOCATIONS = "classpath:/,classpath:/config/,file:./,file:./config/";
 
 	private static final String DEFAULT_NAMES = "application";
