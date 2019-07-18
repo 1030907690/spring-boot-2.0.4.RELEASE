@@ -199,8 +199,13 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 	 * the context itself.
 	 * @return a {@link ServletWebServerFactory} (never {@code null})
 	 */
+	/***
+	 * ServletWebServerFactory是服务器启动的上层抽象
+	 *  web服务器工厂 可以是tomcat 也可以是jetty等等
+	 * */
 	protected ServletWebServerFactory getWebServerFactory() {
 		// Use bean names so that we don't consider the hierarchy
+		// TomcatServletWebServerFactory
 		String[] beanNames = getBeanFactory()
 				.getBeanNamesForType(ServletWebServerFactory.class);
 		if (beanNames.length == 0) {

@@ -58,6 +58,7 @@ public class WebServerFactoryCustomizerBeanPostProcessor
 	public Object postProcessBeforeInitialization(Object bean, String beanName)
 			throws BeansException {
 		if (bean instanceof WebServerFactory) {
+			// 设置web服务器的属性 端口之类的
 			postProcessBeforeInitialization((WebServerFactory) bean);
 		}
 		return bean;

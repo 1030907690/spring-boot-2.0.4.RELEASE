@@ -37,4 +37,7 @@ spring:
 logging:
   config: classpath:logback-boot.xml
 
+study:
+  enable: true
+
 

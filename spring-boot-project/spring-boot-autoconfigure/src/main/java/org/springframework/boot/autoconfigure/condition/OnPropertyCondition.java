@@ -43,6 +43,9 @@ import org.springframework.util.StringUtils;
  * @since 1.1.0
  * @see ConditionalOnProperty
  */
+/***
+ * 条件注解的处理
+ * */
 @Order(Ordered.HIGHEST_PRECEDENCE + 40)
 class OnPropertyCondition extends SpringBootCondition {
 
