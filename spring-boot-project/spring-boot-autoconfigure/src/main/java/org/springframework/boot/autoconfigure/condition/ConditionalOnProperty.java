@@ -101,14 +101,14 @@ public @interface ConditionalOnProperty {
 	 * Alias for {@link #name()}.
 	 * @return the names
 	 */
-	String[] value() default {};
+	String[] value() default {}; //数组，获取对应property名称的值，与name不可同时使用
 
 	/**
 	 * A prefix that should be applied to each property. The prefix automatically ends
 	 * with a dot if not specified.
 	 * @return the prefix
 	 */
-	String prefix() default "";
+	String prefix() default ""; //property名称的前缀，可有可无
 
 	/**
 	 * The name of the properties to test. If a prefix has been defined, it is applied to
@@ -120,20 +120,20 @@ public @interface ConditionalOnProperty {
 	 * to separate words (e.g. {@code my-long-property}).
 	 * @return the names
 	 */
-	String[] name() default {};
+	String[] name() default {}; //数组，property完整名称或部分名称（可与prefix组合使用，组成完整的property名称），与value不可同时使用
 
 	/**
 	 * The string representation of the expected value for the properties. If not
 	 * specified, the property must <strong>not</strong> be equal to {@code false}.
 	 * @return the expected value
 	 */
-	String havingValue() default "";
+	String havingValue() default ""; //可与name组合使用，比较获取到的属性值与havingValue给定的值是否相同，相同才加载配置
 
 	/**
 	 * Specify if the condition should match if the property is not set. Defaults to
 	 * {@code false}.
 	 * @return if should match if the property is missing
 	 */
-	boolean matchIfMissing() default false;
+	boolean matchIfMissing() default false; //缺少该property时是否可以加载。如果为true，没有该property也会正常加载；反之报错
 
 }

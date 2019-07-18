@@ -36,7 +36,11 @@ import org.springframework.util.StringUtils;
  * @author Greg Turnquist
  */
 /***
- * 条件注解
+ * 条件注解 从ConfigurationClassPostProcessor#processConfigBeanDefinitions -> ConfigurationClassParser#parse(Set<BeanDefinitionHolder> configCandidates)->
+ * parse(AnnotationMetadata metadata, String beanName) -> processConfigurationClass(new ConfigurationClass(metadata, beanName)) -> doProcessConfigurationClass(configClass, sourceClass)
+ * -> componentScanParser.parse ..... 中间这部分就是在扫描包  ClassPathScanningCandidateComponentProvider#isCandidateComponent   .... ConditionEvaluator#shouldSkip -> SpringBootCondition#matches(ConditionContext context,AnnotatedTypeMetadata metadata)
+ * -> ....
+ * 调用过来
  * */
 public abstract class SpringBootCondition implements Condition {
 
@@ -45,6 +49,7 @@ public abstract class SpringBootCondition implements Condition {
 	@Override
 	public final boolean matches(ConditionContext context,
 			AnnotatedTypeMetadata metadata) {
+		//
 		String classOrMethodName = getClassOrMethodName(metadata);
 		try {
 			ConditionOutcome outcome = getMatchOutcome(context, metadata);
