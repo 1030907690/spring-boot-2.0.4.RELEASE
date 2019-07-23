@@ -94,7 +94,7 @@ import org.springframework.core.env.Environment;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE, ElementType.METHOD })
 @Documented
-@Conditional(OnPropertyCondition.class)
+@Conditional(OnPropertyCondition.class) //OnPropertyCondition是@ConditionalOnProperty注解的处理类
 public @interface ConditionalOnProperty {
 
 	/**

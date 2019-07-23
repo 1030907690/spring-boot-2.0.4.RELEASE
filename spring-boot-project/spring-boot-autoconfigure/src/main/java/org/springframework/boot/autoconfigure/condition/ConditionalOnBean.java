@@ -60,7 +60,7 @@ import org.springframework.context.annotation.Conditional;
 @Target({ ElementType.TYPE, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Conditional(OnBeanCondition.class)
+@Conditional(OnBeanCondition.class) // OnBeanCondition 是 @ConditionalOnBean注解的处理类
 public @interface ConditionalOnBean {
 
 	/**
@@ -68,6 +68,7 @@ public @interface ConditionalOnBean {
 	 * the classes specified are contained in the {@link ApplicationContext}.
 	 * @return the class types of beans to check
 	 */
+	// bean的类型,当ApplicationContext包含给定类的bean时返回true
 	Class<?>[] value() default {};
 
 	/**
@@ -75,6 +76,7 @@ public @interface ConditionalOnBean {
 	 * of the classes specified are contained in the {@link ApplicationContext}.
 	 * @return the class type names of beans to check
 	 */
+	// bean的类型名,当ApplicationContext包含给定的id时返回true
 	String[] type() default {};
 
 	/**
@@ -83,6 +85,7 @@ public @interface ConditionalOnBean {
 	 * {@link ApplicationContext}.
 	 * @return the class-level annotation types to check
 	 */
+	// bean所声明的注解,当ApplicationContext中存在声明该注解的bean时返回true
 	Class<? extends Annotation>[] annotation() default {};
 
 	/**
@@ -90,6 +93,7 @@ public @interface ConditionalOnBean {
 	 * specified are contained in the {@link ApplicationContext}.
 	 * @return the name of beans to check
 	 */
+	// bean的id,,当ApplicationContext中存在给定id的bean时返回true
 	String[] name() default {};
 
 	/**
@@ -97,6 +101,7 @@ public @interface ConditionalOnBean {
 	 * considered.
 	 * @return the search strategy
 	 */
+	// 默认是所有上下文搜索
 	SearchStrategy search() default SearchStrategy.ALL;
 
 }
