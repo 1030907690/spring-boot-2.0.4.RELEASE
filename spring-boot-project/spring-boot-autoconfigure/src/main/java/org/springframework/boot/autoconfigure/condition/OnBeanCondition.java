@@ -77,7 +77,7 @@ class OnBeanCondition extends SpringBootCondition implements ConfigurationCondit
 		ConditionMessage matchMessage = ConditionMessage.empty();
 		if (metadata.isAnnotated(ConditionalOnBean.class.getName())) {
 			BeanSearchSpec spec = new BeanSearchSpec(context, metadata,
-					ConditionalOnBean.class);
+					ConditionalOnBean.class); // 构造一个BeanSearchSpec，会从@ConditionalOnBean注解中获取属性，然后设置到BeanSearchSpec中
 			MatchResult matchResult = getMatchingBeans(context, spec);
 			if (!matchResult.isAllMatched()) {
 				String reason = createOnBeanNoMatchReason(matchResult);
@@ -181,6 +181,7 @@ class OnBeanCondition extends SpringBootCondition implements ConfigurationCondit
 	}
 
 	private MatchResult getMatchingBeans(ConditionContext context, BeanSearchSpec beans) {
+		// 1. 如果搜索策略为PARENTS或者ANCESTORS,则beanFactory为当前容器的父容器中获取.否则beanFactory从当前容器获取
 		ConfigurableListableBeanFactory beanFactory = context.getBeanFactory();
 		if (beans.getStrategy() == SearchStrategy.ANCESTORS) {
 			BeanFactory parent = beanFactory.getParentBeanFactory();
@@ -192,6 +193,7 @@ class OnBeanCondition extends SpringBootCondition implements ConfigurationCondit
 		boolean considerHierarchy = beans.getStrategy() != SearchStrategy.CURRENT;
 		List<String> beansIgnoredByType = getNamesOfBeansIgnoredByType(
 				beans.getIgnoredTypes(), beanFactory, context, considerHierarchy);
+		// 3. 从beanFactory中获得给定类型的beanIds,如果需要从父容器中搜索,则该方法会合并父容器的接口
 		for (String type : beans.getTypes()) {
 			Collection<String> typeMatches = getBeanNamesForType(beanFactory, type,
 					context.getClassLoader(), considerHierarchy);
@@ -203,6 +205,7 @@ class OnBeanCondition extends SpringBootCondition implements ConfigurationCondit
 				matchResult.recordMatchedType(type, typeMatches);
 			}
 		}
+		// 5. 遍历给定的Annotations,依次从beanFactory中获取声明了该Annotation的bean,如果需要从父容器中搜索,则也会将父容器包含的添加进去
 		for (String annotation : beans.getAnnotations()) {
 			List<String> annotationMatches = Arrays
 					.asList(getBeanNamesForAnnotation(beanFactory, annotation,
@@ -356,26 +359,34 @@ class OnBeanCondition extends SpringBootCondition implements ConfigurationCondit
 
 		BeanSearchSpec(ConditionContext context, AnnotatedTypeMetadata metadata,
 				Class<?> annotationType) {
+			// 1. 对annotationType进行赋值
 			this.annotationType = annotationType;
+			// 获得metadata所有的属性所对应的值,封装为MultiValueMap,key-->属性名,value-->所对应的值,class 转换为String
 			MultiValueMap<String, Object> attributes = metadata
 					.getAllAnnotationAttributes(annotationType.getName(), true);
+			// 从attributes中提取出name的值,赋值为names
 			collect(attributes, "name", this.names);
+			// 从attributes中提取出value的值,赋值为value
 			collect(attributes, "value", this.types);
 			collect(attributes, "type", this.types);
 			collect(attributes, "annotation", this.annotations);
 			collect(attributes, "ignored", this.ignoredTypes);
 			collect(attributes, "ignoredType", this.ignoredTypes);
+			// 赋值SearchStrategy
 			this.strategy = (SearchStrategy) metadata
 					.getAnnotationAttributes(annotationType.getName()).get("search");
 			BeanTypeDeductionException deductionException = null;
 			try {
 				if (this.types.isEmpty() && this.names.isEmpty()) {
+					// 2. 如果types没有设置并且names也没有设置,则如果该metadata是MethodMetadata的实例并且该metadata被@Bean注解
+					// 则将该方法的返回值类型作为types
 					addDeducedBeanType(context, metadata, this.types);
 				}
 			}
 			catch (BeanTypeDeductionException ex) {
 				deductionException = ex;
 			}
+			// 3. 检验,如果types,names,annotations 都为空,则抛出IllegalStateException异常
 			validate(deductionException);
 		}
 

@@ -16,6 +16,7 @@
 
 package org.springframework.boot.context.properties.source;
 
+import org.springframework.boot.env.OriginTrackedMapPropertySource;
 import org.springframework.boot.origin.Origin;
 import org.springframework.boot.origin.OriginLookup;
 import org.springframework.core.env.Environment;
@@ -41,6 +42,7 @@ class ConfigurationPropertySourcesPropertySource
 
 	@Override
 	public Object getProperty(String name) {
+		// 查找配置
 		ConfigurationProperty configurationProperty = findConfigurationProperty(name);
 		return (configurationProperty != null) ? configurationProperty.getValue() : null;
 	}
@@ -52,6 +54,7 @@ class ConfigurationPropertySourcesPropertySource
 
 	private ConfigurationProperty findConfigurationProperty(String name) {
 		try {
+			// 验证name是否有效
 			if (ConfigurationPropertyName.isValid(name)) {
 				return findConfigurationProperty(ConfigurationPropertyName.of(name));
 			}
@@ -67,6 +70,7 @@ class ConfigurationPropertySourcesPropertySource
 			return null;
 		}
 		for (ConfigurationPropertySource configurationPropertySource : getSource()) {
+			// configurationPropertySource为OriginTrackedMapPropertySource是configurationProperty != null
 			ConfigurationProperty configurationProperty = configurationPropertySource
 					.getConfigurationProperty(name);
 			if (configurationProperty != null) {

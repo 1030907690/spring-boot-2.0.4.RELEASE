@@ -38,7 +38,8 @@ import org.springframework.util.StringUtils;
 /***
  * 条件注解 从ConfigurationClassPostProcessor#processConfigBeanDefinitions -> ConfigurationClassParser#parse(Set<BeanDefinitionHolder> configCandidates)->
  * parse(AnnotationMetadata metadata, String beanName) -> processConfigurationClass(new ConfigurationClass(metadata, beanName)) -> doProcessConfigurationClass(configClass, sourceClass)
- * -> componentScanParser.parse ..... 中间这部分就是在扫描包  ClassPathScanningCandidateComponentProvider#isCandidateComponent   .... ConditionEvaluator#shouldSkip -> SpringBootCondition#matches(ConditionContext context,AnnotatedTypeMetadata metadata)
+ * -> componentScanParser.parse ..... 中间这部分就是在扫描包  ClassPathScanningCandidateComponentProvider#isCandidateComponent  触发扫描包，此处如果返回false 该bean将不会添加到candidates,也就不初始化了
+ *  ClassPathScanningCandidateComponentProvider#isConditionMatch -> ConditionEvaluator#shouldSkip -> SpringBootCondition#matches(ConditionContext context,AnnotatedTypeMetadata metadata)
  * -> ....
  * 调用过来
  * */

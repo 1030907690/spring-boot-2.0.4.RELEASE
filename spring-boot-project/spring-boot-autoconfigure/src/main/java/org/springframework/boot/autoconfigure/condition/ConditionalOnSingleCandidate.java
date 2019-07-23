@@ -42,6 +42,7 @@ import org.springframework.context.annotation.Conditional;
  * @author Stephane Nicoll
  * @since 1.3.0
  */
+//注意: value ,type 属性不能同时出现,只能使用一个
 @Target({ ElementType.TYPE, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
@@ -57,6 +58,15 @@ public @interface ConditionalOnSingleCandidate {
 	 * {@link #type()}, but it may be used instead of {@link #type()}.
 	 * @return the class type of the bean to check
 	 */
+
+	/**
+	 *
+	 * bean的类型,当ApplicationContext包含给定类的bean时并且如果有多个该类型的bean并且指定为primary的
+	 * 存在则返回true.
+	 *
+	 * @return the class type of the bean to check
+	 */
+
 	Class<?> value() default Object.class;
 
 	/**
@@ -68,11 +78,22 @@ public @interface ConditionalOnSingleCandidate {
 	 * {@link #value()}, but it may be used instead of {@link #value()}.
 	 * @return the class type name of the bean to check
 	 */
+	/**
+	 *
+	 * bean的类型名,当ApplicationContext包含给定的id并且如果有多个该类型的bean并且指定为primary的
+	 * 存在则返回true.
+	 * @return the class type name of the bean to check
+	 */
 	String type() default "";
 
 	/**
 	 * Strategy to decide if the application context hierarchy (parent contexts) should be
 	 * considered.
+	 * @return the search strategy
+	 */
+	/**
+	 *
+	 * 默认是所有上下文搜索
 	 * @return the search strategy
 	 */
 	SearchStrategy search() default SearchStrategy.ALL;
