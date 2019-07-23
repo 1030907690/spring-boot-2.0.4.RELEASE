@@ -80,6 +80,7 @@ class OnBeanCondition extends SpringBootCondition implements ConfigurationCondit
 					ConditionalOnBean.class); // 构造一个BeanSearchSpec，会从@ConditionalOnBean注解中获取属性，然后设置到BeanSearchSpec中
 			MatchResult matchResult = getMatchingBeans(context, spec);
 			if (!matchResult.isAllMatched()) {
+				// 如果没有匹配到
 				String reason = createOnBeanNoMatchReason(matchResult);
 				return ConditionOutcome.noMatch(ConditionMessage
 						.forCondition(ConditionalOnBean.class, spec).because(reason));
@@ -123,6 +124,7 @@ class OnBeanCondition extends SpringBootCondition implements ConfigurationCondit
 			matchMessage = matchMessage.andCondition(ConditionalOnMissingBean.class, spec)
 					.didNotFind("any beans").atAll();
 		}
+		//返回匹配到
 		return ConditionOutcome.match(matchMessage);
 	}
 
@@ -191,17 +193,21 @@ class OnBeanCondition extends SpringBootCondition implements ConfigurationCondit
 		}
 		MatchResult matchResult = new MatchResult();
 		boolean considerHierarchy = beans.getStrategy() != SearchStrategy.CURRENT;
+		//寻找忽略的
 		List<String> beansIgnoredByType = getNamesOfBeansIgnoredByType(
 				beans.getIgnoredTypes(), beanFactory, context, considerHierarchy);
 		// 3. 从beanFactory中获得给定类型的beanIds,如果需要从父容器中搜索,则该方法会合并父容器的接口
 		for (String type : beans.getTypes()) {
 			Collection<String> typeMatches = getBeanNamesForType(beanFactory, type,
 					context.getClassLoader(), considerHierarchy);
+			//删除忽略的
 			typeMatches.removeAll(beansIgnoredByType);
 			if (typeMatches.isEmpty()) {
+				// 记录未匹配到的
 				matchResult.recordUnmatchedType(type);
 			}
 			else {
+				// 记录匹配到的结果
 				matchResult.recordMatchedType(type, typeMatches);
 			}
 		}
@@ -265,6 +271,7 @@ class OnBeanCondition extends SpringBootCondition implements ConfigurationCondit
 
 	private void collectBeanNamesForType(Set<String> result,
 			ListableBeanFactory beanFactory, Class<?> type, boolean considerHierarchy) {
+		// 根据类型拿到beanName 添加到result
 		result.addAll(BeanTypeRegistry.get(beanFactory).getNamesForType(type));
 		if (considerHierarchy && beanFactory instanceof HierarchicalBeanFactory) {
 			BeanFactory parent = ((HierarchicalBeanFactory) beanFactory)
@@ -370,7 +377,9 @@ class OnBeanCondition extends SpringBootCondition implements ConfigurationCondit
 			collect(attributes, "value", this.types);
 			collect(attributes, "type", this.types);
 			collect(attributes, "annotation", this.annotations);
+			// 忽略类型
 			collect(attributes, "ignored", this.ignoredTypes);
+			// 忽略类型
 			collect(attributes, "ignoredType", this.ignoredTypes);
 			// 赋值SearchStrategy
 			this.strategy = (SearchStrategy) metadata
@@ -565,11 +574,14 @@ class OnBeanCondition extends SpringBootCondition implements ConfigurationCondit
 		}
 
 		private void recordMatchedType(String type, Collection<String> matchingNames) {
+			// 匹配到的类型
 			this.matchedTypes.put(type, matchingNames);
+			//全部匹配到的
 			this.namesOfAllMatches.addAll(matchingNames);
 		}
 
 		private void recordUnmatchedType(String type) {
+			// 未匹配到的类型
 			this.unmatchedTypes.add(type);
 		}
 
