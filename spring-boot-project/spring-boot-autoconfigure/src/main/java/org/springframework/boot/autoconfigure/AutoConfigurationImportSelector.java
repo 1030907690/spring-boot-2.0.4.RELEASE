@@ -92,17 +92,21 @@ public class AutoConfigurationImportSelector
 		if (!isEnabled(annotationMetadata)) {
 			return NO_IMPORTS;
 		}
+		// 获取注解的属性
 		AutoConfigurationMetadata autoConfigurationMetadata = AutoConfigurationMetadataLoader
 				.loadMetadata(this.beanClassLoader);
 		AnnotationAttributes attributes = getAttributes(annotationMetadata);
-		// 得到自动配置的类
+		// 得到自动配置的类     读取spring.factories属性文件中的数据
 		List<String> configurations = getCandidateConfigurations(annotationMetadata,
 				attributes);
+		// 删除重复的配置类
 		configurations = removeDuplicates(configurations);
-		//得到排除的列表
+		//    找到@EnableAutoConfiguration注解中定义的需要被过滤的配置类 得到要排除的列表
 		Set<String> exclusions = getExclusions(annotationMetadata, attributes);
 		checkExcludedClasses(configurations, exclusions);
+		// 删除这些需要被过滤的配置类
 		configurations.removeAll(exclusions);
+		// 配置类做排序
 		configurations = filter(configurations, autoConfigurationMetadata);
 		fireAutoConfigurationImportEvents(configurations, exclusions);
 		return StringUtils.toStringArray(configurations);
