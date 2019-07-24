@@ -66,6 +66,8 @@ import org.springframework.util.StringUtils;
  * @since 1.3.0
  * @see EnableAutoConfiguration
  */
+
+/*ConfigurationClassParser从processDeferredImportSelectors调用过来*/
 public class AutoConfigurationImportSelector
 		implements DeferredImportSelector, BeanClassLoaderAware, ResourceLoaderAware,
 		BeanFactoryAware, EnvironmentAware, Ordered {
@@ -93,9 +95,11 @@ public class AutoConfigurationImportSelector
 		AutoConfigurationMetadata autoConfigurationMetadata = AutoConfigurationMetadataLoader
 				.loadMetadata(this.beanClassLoader);
 		AnnotationAttributes attributes = getAttributes(annotationMetadata);
+		// 得到自动配置的类
 		List<String> configurations = getCandidateConfigurations(annotationMetadata,
 				attributes);
 		configurations = removeDuplicates(configurations);
+		//得到排除的列表
 		Set<String> exclusions = getExclusions(annotationMetadata, attributes);
 		checkExcludedClasses(configurations, exclusions);
 		configurations.removeAll(exclusions);
@@ -387,6 +391,7 @@ public class AutoConfigurationImportSelector
 			this.resourceLoader = resourceLoader;
 		}
 
+		/*ConfigurationClassParser从processDeferredImportSelectors调用过来*/
 		@Override
 		public void process(AnnotationMetadata annotationMetadata,
 				DeferredImportSelector deferredImportSelector) {
