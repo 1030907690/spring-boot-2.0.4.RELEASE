@@ -327,7 +327,7 @@ public class ConfigFileApplicationListener
 			//获取类加载器
 			this.resourceLoader = (resourceLoader != null) ? resourceLoader
 					: new DefaultResourceLoader();
-			//获取propertySourceLoaders
+			//获取propertySourceLoaders  这里有2个 PropertiesPropertySourceLoader 、 YamlPropertySourceLoader
 			this.propertySourceLoaders = SpringFactoriesLoader.loadFactories(
 					PropertySourceLoader.class, getClass().getClassLoader());
 		}
