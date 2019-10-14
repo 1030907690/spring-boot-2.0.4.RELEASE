@@ -36,6 +36,7 @@ public class GamePayApplication {
 
 
 	/*
+	*PropertySourcesPlaceholderConfigurer由PropertyPlaceholderAutoConfiguration初始化
 	spring boot 对于配置文件的处理用的PropertySourcesPlaceholderConfigurer ，通过EnvironmentAware接口封装在environment属性中； 只是真正解析的工作是ConfigFileApplicationListener完成的，封装在
 	* */
 

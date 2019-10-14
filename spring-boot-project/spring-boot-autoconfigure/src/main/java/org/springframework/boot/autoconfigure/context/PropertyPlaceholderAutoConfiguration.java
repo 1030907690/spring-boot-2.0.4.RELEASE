@@ -33,9 +33,12 @@ import org.springframework.core.Ordered;
  * @author Dave Syer
  */
 @Configuration
-@AutoConfigureOrder(Ordered.HIGHEST_PRECEDENCE)
+@AutoConfigureOrder(Ordered.HIGHEST_PRECEDENCE) // 优先级最高
 public class PropertyPlaceholderAutoConfiguration {
 
+	/***
+	 * 初始解析配置文件的解析器
+	 * */
 	@Bean
 	@ConditionalOnMissingBean(search = SearchStrategy.CURRENT)
 	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
